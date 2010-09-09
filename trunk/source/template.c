@@ -52,6 +52,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "unzip/miniunz.h"
 #include "file/file.h"
 
+#include "fileop/fileop.h"
+
+#ifdef HW_RVL
+#include <di/di.h>
+#endif
+
+//_____________________________________________________________________________
+// For the fileop stuff
+#define HW_REG_BASE 0xcd800000
+#define HW_ARMIRQMASK (HW_REG_BASE + 0x03c)
+#define HW_ARMIRQFLAG (HW_REG_BASE + 0x038)
 
 //_____________________________________________________________________________
 
@@ -110,7 +121,7 @@ Take off 48 to get real version number, e.g.
 */
 
 #define VERSION 50
-#define REV 53
+#define REV 54
 
 //_____________________________________________________________________________
 
@@ -271,6 +282,7 @@ s8 HWButton = -1;
 
 //Filename to hold the ini file we're using!
 char* fileName;
+
 
 //_______________________________________________________________________________
 /**
@@ -638,7 +650,7 @@ void readFile()
 		if(bootMiiIniExists && altBootMiiIniExists)
 		{
 
-			int choice = drawThreeChoice(13,MAIN_WINY+2,11,54,strdup("Multiple BootMii Directories Found"),strdup("(A) Swap [/bootmii/] and [~/bootmii/] then Exit"), strdup("(1) Edit: [/bootmii/boomii.ini]"),strdup("(2) Edit: [/~bootmii/boomii.ini]"));
+			int choice = drawFourChoice(13,MAIN_WINY+2,11,54,strdup("Multiple BootMii Directories Found"),strdup("(A) Swap [/bootmii/] and [~/bootmii/] then Exit"),strdup("(B) Swap [/bootmii/] and [~/bootmii/] then Reboot"), strdup("(1) Edit: [/bootmii/boomii.ini]"),strdup("(2) Edit: [/~bootmii/boomii.ini]"));
 			if(choice==1)
 			{
 				fileName = strdup("sd:/bootmii/bootmii.ini");
@@ -647,45 +659,81 @@ void readFile()
 			{
 				fileName = strdup("sd:/~bootmii/bootmii.ini");
 			}
-			else
+			else if(choice ==3)
 			{
 				//Choice must be A - just swap!
 				renameDirectories();
+				UnmountAllDevices();
 				exit(0);
+			}
+			else
+			{
+				//Choice must be b
+				renameDirectories();
+				UnmountAllDevices();
+				SYS_ResetSystem(SYS_RESTART,0,0);
+				exit(0);
+				//Need to do a hard reset here!
 			}
 		}
 		else if(bootMiiIniExists)
 		{
-			int choice = drawTwoChoiceA1(13,MAIN_WINY+2,11,54,strdup("Multiple BootMii Directories Found"),strdup("(A) Swap [/bootmii/] and [~/bootmii/] then Exit"), strdup("(1) Edit: [/bootmii/boomii.ini]"));
+			int choice = drawThreeChoiceAB1(13,MAIN_WINY+2,11,54,strdup("Multiple BootMii Directories Found"),strdup("(A) Swap [/bootmii/] and [~/bootmii/] then Exit"),strdup("(B) Swap [/bootmii/] and [~/bootmii/] then Reboot"), strdup("(1) Edit: [/bootmii/boomii.ini]"));
 			if(choice==1)fileName = strdup("sd:/bootmii/bootmii.ini");
 			else if (choice==2)
 			{
 				renameDirectories();
+				UnmountAllDevices();
+				exit(0);
+			}
+			else
+			{
+				renameDirectories();
+				UnmountAllDevices();
+				SYS_ResetSystem(SYS_RESTART,0,0);
 				exit(0);
 			}
 		}
 		else if(altBootMiiIniExists)
 		{
-			int choice = drawTwoChoiceA1(13,MAIN_WINY+2,11,54,strdup("Multiple BootMii Directories Found"),strdup("(A) Swap [/bootmii/] and [~/bootmii/] then Exit"), strdup("(1) Edit: [/~bootmii/boomii.ini]"));
+			int choice = drawThreeChoiceAB1(13,MAIN_WINY+2,11,54,strdup("Multiple BootMii Directories Found"),strdup("(A) Swap [/bootmii/] and [~/bootmii/] then Exit"),strdup("(B) Swap [/bootmii/] and [~/bootmii/] then Reboot"), strdup("(1) Edit: [/~bootmii/boomii.ini]"));
 			if(choice==1)fileName = strdup("sd:/~bootmii/bootmii.ini");
 			else if (choice==2)
 			{
 				renameDirectories();
+				UnmountAllDevices();
 				exit(0);
-			}		
+			}
+			else
+			{
+				renameDirectories();
+				UnmountAllDevices();
+				SYS_ResetSystem(SYS_RESTART,0,0);
+				exit(0);
+			}
+		
 		}
 		else
 		{
-			int choice = drawTwoChoiceA1(13,MAIN_WINY+2,11,54,strdup("No BootMii.ini found!"),strdup("(A) Swap [/bootmii/] and [~/bootmii/] then Exit"), strdup("(1) Exit"));
+			int choice = drawThreeChoiceAB1(13,MAIN_WINY+2,11,54,strdup("No BootMii.ini found!"),strdup("(A) Swap [/bootmii/] and [~/bootmii/] then Exit"),strdup("(B) Swap [/bootmii/] and [~/bootmii/] then Reboot"), strdup("(1) Exit"));
 			if(choice==1)
 			{
+				UnmountAllDevices();
 				exit(0);			
 			}
 			else if (choice==2)
 			{
 				renameDirectories();
+				UnmountAllDevices();
 				exit(0);			
 			}
+			else
+			{
+				renameDirectories();
+				UnmountAllDevices();
+				SYS_ResetSystem(SYS_RESTART,0,0);
+				exit(0);			
+			}			
 		}
 		
 	}
@@ -904,7 +952,7 @@ void initScreen()
 	}*/
 	clearConsole(skin_console_bgcolor);
 
-	drawWindow (4,MAIN_WINY,15,72,skin_main_bgcolor,skin_main_titlecolor,skin_main_titlelinecolor,skin_main_bgcolor,skin_main_shadow,skin_main_decl,"BootMii Configuration Editor (v2.5)");
+	drawWindow (4,MAIN_WINY,15,72,skin_main_bgcolor,skin_main_titlecolor,skin_main_titlelinecolor,skin_main_bgcolor,skin_main_shadow,skin_main_decl,"BootMii Configuration Editor (v2.6)");
 	drawString(36,MAIN_WINY + 12,skin_main_textcolor,skin_main_bgcolor, concat("Editing: ",strdup(fileName)));
 	drawString(36,MAIN_WINY + 13,skin_main_textcolor2,skin_main_bgcolor, "(C)2010 Pembo - http://www.pembo.co.uk");
 
@@ -1417,6 +1465,7 @@ void checkForUpdatedVersion()
 					printf("\n Update Complete.  Press 'HOME' to Exit, then please restart\n");
 					printf(" BootMii Configuration Editor from your launcher.");
 					pressHomeToExit();
+					
 
 				}
 				else
@@ -1448,12 +1497,12 @@ void initialiseCoreApplication(int argc, char* argv)
 	//display_jpeg(title, LOGOX, LOGOY);
 
 	//printf("Initialising Please wait....");
-	printf("\n\n Initialising BootMii Configuration Editor (v2.5) - Please wait\n\n");
+	printf("\n\n Initialising BootMii Configuration Editor (v2.6) - Please wait\n\n");
 	//sleep(5);
 
 
 	initialiseAppPath(argc,strdup(argv));
-
+	MountAllDevices();
 	//printf("about to initialise fat");
 
 	initialiseFat();
@@ -1578,6 +1627,16 @@ void changeOptionDown()
 
 
 
+//_______________________________________________________________________________
+/**
+ * Check if we have hardware access
+ */
+int have_hw_access()
+{
+	if((*(volatile unsigned int*)HW_ARMIRQMASK)&&(*(volatile unsigned int*)HW_ARMIRQFLAG)) return 1;
+	else return 0;
+}
+
 
 //_______________________________________________________________________________
 /*
@@ -1586,6 +1645,12 @@ void changeOptionDown()
 //int main(int argc, char **argv)
 int main(int argc, char *argv[])
 {
+	// only reload IOS if AHBPROT is not enabled
+	u32 version = IOS_GetVersion();
+    s32 preferred = IOS_GetPreferredVersion();
+
+    if(version != 58 && preferred > 0 && version != (u32)preferred && have_hw_access()!=1) 
+		IOS_ReloadIOS(preferred);	
 	//sleep(5);
 
 	//printf(" initialise wii app\n");
@@ -1600,13 +1665,15 @@ int main(int argc, char *argv[])
 
 	//printf("init app\n ");
 	//sleep(2);
+	SYS_SetResetCallback(WiiResetPressed);
+	SYS_SetPowerCallback(WiiPowerPressed);
+	WPAD_SetPowerButtonCallback(WiimotePowerPressed);
+
+
 	initialiseCoreApplication(argc,strdup(argv[0]));
 	//sleep(5);
 
 
-	SYS_SetResetCallback(WiiResetPressed);
-	SYS_SetPowerCallback(WiiPowerPressed);
-	WPAD_SetPowerButtonCallback(WiimotePowerPressed);
 
 
 	
@@ -1783,7 +1850,7 @@ int main(int argc, char *argv[])
 							centerString(MAIN_WINY+7,skin_dialog_textcolor,skin_dialog_bgcolor,"Now Switching Directories...");
 							renameDirectories();
 						}
-						
+						UnmountAllDevices();
 						exit(0);
 					//}
 					//else
@@ -1801,6 +1868,7 @@ int main(int argc, char *argv[])
 				if(onItem==6)
 				{
 					//fatUnmount(0);
+					UnmountAllDevices();
 					exit(0);
 				}
 
@@ -1851,15 +1919,17 @@ int main(int argc, char *argv[])
 
 	if(HWButton == SYS_POWEROFF_STANDBY)
 	{
+		UnmountAllDevices();
 		SYS_ResetSystem(SYS_POWEROFF,0,0);
 	}
 
 	if(HWButton == SYS_RETURNTOMENU)
 	{
+		UnmountAllDevices();
 		SYS_ResetSystem(SYS_RESTART,0,0);
 
 	}
 
-
+	UnmountAllDevices();
 	return 0;
 }

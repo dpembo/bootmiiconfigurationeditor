@@ -51,6 +51,18 @@ int getChoiceFromAor1()
 		}
 }
 
+int getChoiceFromABor1()
+{
+		while(1)
+		{
+			WPAD_ScanPads();
+			u32 pressed = WPAD_ButtonsDown(0);
+			if ( pressed & WPAD_BUTTON_1 ) return 1;
+			if ( pressed & WPAD_BUTTON_A ) return 2;
+			if ( pressed & WPAD_BUTTON_B ) return 3;
+		}
+}
+
 int getChoiceFrom1or2()
 {
 		while(1)
@@ -71,6 +83,19 @@ int getChoiceFromA1or2()
 			if ( pressed & WPAD_BUTTON_1 ) return 1;
 			if ( pressed & WPAD_BUTTON_2 ) return 2;
 			if ( pressed & WPAD_BUTTON_A ) return 3;
+		}
+}
+
+int getChoiceFromAB1or2()
+{
+		while(1)
+		{
+			WPAD_ScanPads();
+			u32 pressed = WPAD_ButtonsDown(0);
+			if ( pressed & WPAD_BUTTON_1 ) return 1;
+			if ( pressed & WPAD_BUTTON_2 ) return 2;
+			if ( pressed & WPAD_BUTTON_A ) return 3;
+			if ( pressed & WPAD_BUTTON_B ) return 4;
 		}
 }
 
