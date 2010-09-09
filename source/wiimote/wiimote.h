@@ -26,6 +26,8 @@ void pressHomeToExit();
 int getChoiceFromAor1();
 int getChoiceFrom1or2();
 int getChoiceFromA1or2();
+int getChoiceFromAB1or2();
+int getChoiceFromABor1();
 void press1ToContinue();
 void startRumble();
 bool checkStopRumble();

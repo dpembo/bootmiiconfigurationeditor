@@ -354,6 +354,37 @@ void drawError(int startX,int startY,int rows,int cols,char* msg)
 * Good size if 15,11,11,50,DARK_RED,WHITE,DARK_RED
 */
 
+int drawFourChoice(int startX,int startY,int rows,int cols,char* title,char* opt1,char* opt2,char* opt3,char* opt4)
+{
+		//errorApplication("Could not open file for reading");
+		
+		drawWindow(startX,startY,rows,cols,skin_dialog_bgcolor,skin_dialog_titlecolor,skin_dialog_titlelinecolor,skin_dialog_bgcolor,skin_dialog_shadow,skin_dialog_decl,title);
+		//drawWindow(15,11,11,50,DARK_RED,WHITE,DARK_RED,"Error");
+
+		drawString(startX+3, 12,skin_dialog_textcolor,skin_dialog_bgcolor,opt1);
+		drawString(startX+3, 13,skin_dialog_textcolor,skin_dialog_bgcolor,opt2);
+		drawString(startX+3, 14,skin_dialog_textcolor,skin_dialog_bgcolor,opt3);
+		drawString(startX+3, 15,skin_dialog_textcolor,skin_dialog_bgcolor,opt4);
+		centerString(17,skin_dialog_textcolor,skin_dialog_bgcolor,"Press (A), (B), (1) or (2) to select");
+		int choice = getChoiceFromAB1or2();
+		return choice;
+}
+
+int drawThreeChoiceAB1(int startX,int startY,int rows,int cols,char* title,char* opt1,char* opt2,char* opt3)
+{
+		//errorApplication("Could not open file for reading");
+		
+		drawWindow(startX,startY,rows,cols,skin_dialog_bgcolor,skin_dialog_titlecolor,skin_dialog_titlelinecolor,skin_dialog_bgcolor,skin_dialog_shadow,skin_dialog_decl,title);
+		//drawWindow(15,11,11,50,DARK_RED,WHITE,DARK_RED,"Error");
+
+		drawString(startX+3, 13,skin_dialog_textcolor,skin_dialog_bgcolor,opt1);
+		drawString(startX+3, 14,skin_dialog_textcolor,skin_dialog_bgcolor,opt2);
+		drawString(startX+3, 15,skin_dialog_textcolor,skin_dialog_bgcolor,opt3);
+		centerString(17,skin_dialog_textcolor,skin_dialog_bgcolor,"Press (A), (B) or (1) to select");
+		int choice = getChoiceFromABor1();
+		return choice;
+}
+
 int drawThreeChoice(int startX,int startY,int rows,int cols,char* title,char* opt1,char* opt2,char* opt3)
 {
 		//errorApplication("Could not open file for reading");

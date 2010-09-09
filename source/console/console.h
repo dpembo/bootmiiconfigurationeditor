@@ -35,6 +35,8 @@ void drawError(int startX,int startY,int rows,int cols,char* msg);
 int drawTwoChoice(int startX,int startY,int rows,int cols,char* title,char* opt1,char* opt2);
 int drawTwoChoiceA1(int startX,int startY,int rows,int cols,char* title,char* opt1,char* opt2);
 int drawThreeChoice(int startX,int startY,int rows,int cols,char* title,char* opt1,char* opt2,char* opt3);
+int drawThreeChoiceAB1(int startX,int startY,int rows,int cols,char* title,char* opt1,char* opt2,char* opt3);
+int drawFourChoice(int startX,int startY,int rows,int cols,char* title,char* opt1,char* opt2,char* opt3,char* opt4);
 int drawInfo(int startX,int startY,int rows,int cols,char* msg,char* choiceMessage);
 void systemError(char *msg);
 
