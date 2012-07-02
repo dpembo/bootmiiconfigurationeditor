@@ -17,7 +17,7 @@ include $(DEVKITPPC)/wii_rules
 #---------------------------------------------------------------------------------
 TARGET		:=	$(notdir $(CURDIR))
 BUILD		:=	build
-SOURCES		:=	source source/stringutils source/unzip source/memory source/http source/console source/wiimote source/i18n source/xml source/utils
+SOURCES		:=	source source/stringutils source/unzip source/memory source/http source/console source/wiimote source/i18n source/xml source/utils source/fileop
 DATA		:=	data  
 INCLUDES	:=
 
@@ -35,7 +35,7 @@ LDFLAGS	=	-g $(MACHDEP) -Wl,-Map,$(notdir $@).map
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
 #---------------------------------------------------------------------------------
-LIBS	:=	-lwiiuse -lbte -lfat -logc -lm -lmxml -lz
+LIBS	:=	-lwiiuse -lbte -lfat -ldi -logc -lm -lmxml -lz -lntfs
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
