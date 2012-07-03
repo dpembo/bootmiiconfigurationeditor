@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <app version="0.3">
 	<name>BootMii Config Editor</name>
-	<version>2.5</version>
-        <release_date>201004082330</release_date>
+	<version>2.7</version>
+        <release_date>201207032200</release_date>
 	<coder>Pembo</coder>
 	<short_description>Edit bootmii settings</short_description>
 	<long_description>Allows you to modify the video, autoboot, and bootdelay options from the BootMii ini file (sd:/bootmii/bootmii.ini) directly on the wii.

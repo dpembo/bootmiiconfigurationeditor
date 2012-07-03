@@ -5,7 +5,7 @@
 |  _ \ / _ \ / _ \| __| |\/| | | | | |   / _ \| '_ \| |_| |/ _` | |  _| / _` | | __/ _ \| '__|
 | |_) | (_) | (_) | |_| |  | | | | | |__| (_) | | | |  _| | (_| | | |__| (_| | | || (_) | |   
 |____/ \___/ \___/ \__|_|  |_|_|_|  \____\___/|_| |_|_| |_|\__, | |_____\__,_|_|\__\___/|_|   
-                                                           |___/    BootMii Config Editor v2.5
+                                                           |___/    BootMii Config Editor v2.7
                                                         (c)2010 Pembo - http://www.pembo.co.uk
 
 -----------------------------------------------------------------------------------------------------
@@ -61,6 +61,19 @@ and update the icon as to what it finds.
 
 Change Log
 ===================
+
+03 July 2012 - v2.7
+- Updated and compiled against latest libogc / devkitpro
+- Modifed update URL
+
+05 September 2010 - v2.6
+- When BootMii Switch is active, a new option has been added - switch and reboot.  This allows you
+  to switch the directories around and restart the wii immediately.
+
+- USB2.0 Support (via IOS58).  Bootmii Config Editor can now launch from a USB drive, however it will
+  still only edit INI files on the SD card.  This utilises IOS58 from the HBC channel.
+  If you don't have IOS58 installed, you can install this using the IOS58 Clean Installer.
+  http://www.wiibrew.org/wiki/IOS58_Installer
 
 07 August 2010 - v2.5
 - Implementation Of BootMii Switch functionality.  Can enable/disable BootMii through 
