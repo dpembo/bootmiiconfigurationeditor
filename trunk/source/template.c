@@ -121,7 +121,7 @@ Take off 48 to get real version number, e.g.
 */
 
 #define VERSION 50
-#define REV 54
+#define REV 55
 
 //_____________________________________________________________________________
 
@@ -384,10 +384,10 @@ bool altBootMiiIniExistsInDir()
 */
 bool can_open_root_fs()
 {
-	DIR_ITER *root = diropen("sd:/");
+	DIR *root = opendir("sd:/");
 	if (root)
 	{
-		dirclose(root);
+		closedir(root);
 		return true;
 	}
 	return false;
@@ -952,7 +952,7 @@ void initScreen()
 	}*/
 	clearConsole(skin_console_bgcolor);
 
-	drawWindow (4,MAIN_WINY,15,72,skin_main_bgcolor,skin_main_titlecolor,skin_main_titlelinecolor,skin_main_bgcolor,skin_main_shadow,skin_main_decl,"BootMii Configuration Editor (v2.6)");
+	drawWindow (4,MAIN_WINY,15,72,skin_main_bgcolor,skin_main_titlecolor,skin_main_titlelinecolor,skin_main_bgcolor,skin_main_shadow,skin_main_decl,"BootMii Configuration Editor (v2.7)");
 	drawString(36,MAIN_WINY + 12,skin_main_textcolor,skin_main_bgcolor, concat("Editing: ",strdup(fileName)));
 	drawString(36,MAIN_WINY + 13,skin_main_textcolor2,skin_main_bgcolor, "(C)2010 Pembo - http://www.pembo.co.uk");
 
@@ -1497,7 +1497,7 @@ void initialiseCoreApplication(int argc, char* argv)
 	//display_jpeg(title, LOGOX, LOGOY);
 
 	//printf("Initialising Please wait....");
-	printf("\n\n Initialising BootMii Configuration Editor (v2.6) - Please wait\n\n");
+	printf("\n\n Initialising BootMii Configuration Editor (v2.7) - Please wait\n\n");
 	//sleep(5);
 
 
