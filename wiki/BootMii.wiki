@@ -1,3 +1,6 @@
-#summary One-sentence summary of this page.
+#summary Bootmii Configuration Editor
 
+(C)2010 [http://www.pembo.co.uk pembo.co.uk]
+
+Bootmii
 http://www.bootmii.org
